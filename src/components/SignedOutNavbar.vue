@@ -8,15 +8,11 @@
   import Links from './Links.vue'
 
   export default {
-    name: 'navbar',
+    name: 'SignedOutNavbar',
     data () {
       return {
         navLinks: [
-          {path: 'dashboard', description: 'Dashboard'},
-          {path: '#', description: 'View Stats'},
-          {path: '#', description: 'Log Stats'},
-          {path: '/', description: 'Sign Out', class: 'rightSidebar'},
-          {path: '#', description: 'Profile', class: 'rightSidebar'}
+          {path: '/dashboard', description: 'Sign In', class: 'rightNavbar'}
         ]
       }
     },
@@ -26,6 +22,7 @@
   }
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
   .topnav {
       background-color: #66CCFF;
@@ -52,7 +49,7 @@
       color: white;
   }
 
-  .topnav a.rightSidebar {
-    float:right;
+  .topnav a.rightNavbar {
+    float: right;
   }
 </style>

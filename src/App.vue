@@ -3,8 +3,8 @@
     <header>
       <router-view name='navbar'></router-view>
     </header>
-    <router-view name='hello'></router-view>
-    <footer></footer>
+    <router-view name='main'></router-view>
+    <router-view name='footer'></router-view> 
   </div>
 </template>
 
@@ -21,5 +21,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%
 }
 </style>
