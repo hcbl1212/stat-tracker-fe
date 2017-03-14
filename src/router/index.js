@@ -28,7 +28,8 @@ var router = new Router({
       components: {
         main: Dashboard,
         navbar: SignedInNavbar,
-        footer: Footer
+        footer: Footer,
+        meta: {auth: true}
       }
     }
   ]
