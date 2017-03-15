@@ -3,27 +3,14 @@
     <header>
       <router-view name='navbar'></router-view>
     </header>
-    <div v-if="$auth.ready()">
-      <router-view name='main'></router-view>
-    </div>
+    <router-view name='main'></router-view>
     <router-view name='footer'></router-view> 
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app',
-  mounted () {
-    var _this = this
-    // Set up $auth.ready with other arbitrary loaders (ex: language file).
-    setTimeout(function () {
-      _this.loaded = true
-    }, 500)
-  },
-  created () {
-    console.dir(this.$auth.ready())
-    console.dir(this.axios)
-  }
+  name: 'app'
 }
 </script>
 

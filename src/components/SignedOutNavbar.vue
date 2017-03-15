@@ -12,7 +12,7 @@
     data () {
       return {
         navLinks: [
-          {path: '/dashboard', description: 'Sign In', class: 'rightNavbar'}
+          {path: '/login', description: 'Sign In', class: 'rightNavbar'}
         ]
       }
     },

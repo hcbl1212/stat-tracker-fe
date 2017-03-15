@@ -8,6 +8,7 @@ import SignedOutNavbar from '@/components/SignedOutNavbar'
 import Footer from '@/components/Footer'
 import Dashboard from '@/components/Dashboard'
 import SignedInNavbar from '@/components/Navbar'
+import SignInForm from '@/components/SignInForm'
 
 Vue.use(Router)
 
@@ -17,6 +18,7 @@ var router = new Router({
   routes: [
     {
       path: '/',
+      meta: {auth: undefined},
       components: {
         main: Hello,
         navbar: SignedOutNavbar,
@@ -25,11 +27,20 @@ var router = new Router({
     },
     {
       path: '/dashboard',
+      meta: {auth: true},
       components: {
         main: Dashboard,
         navbar: SignedInNavbar,
-        footer: Footer,
-        meta: {auth: true}
+        footer: Footer
+      }
+    },
+    {
+      path: '/login',
+      meta: {auth: undefined},
+      components: {
+        main: SignInForm,
+        navbar: SignedOutNavbar,
+        footer: Footer
       }
     }
   ]
