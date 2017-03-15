@@ -12,6 +12,7 @@
     data () {
       return {
         navLinks: [
+          {path: '/', description: 'Stat Tracker'},
           {path: '/login', description: 'Sign In', class: 'rightNavbar'}
         ]
       }

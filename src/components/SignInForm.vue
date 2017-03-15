@@ -1,18 +1,18 @@
 <template>
   <div class="form-container">
     <h1> Sign In</h1>
-    <form>
+    <form v-on:submit.prevent="login()">
       <div class="field-wrap">
         <label>
           Email Address<span class="req">*</span>
         </label>
-        <input type="email"required autocomplete="off"/>
+        <input v-model="data.body.email" type="email"required autocomplete="off"/>
       </div>
       <div class="field-wrap">
         <label>
           Password<span class="req">*</span>
         </label>
-        <input type="password"required autocomplete="off"/>
+        <input v-model="data.body.password" type="password"required autocomplete="off"/>
       </div> 
       <button class="button button-block">Log In</button>
     </form>
@@ -22,7 +22,42 @@
 <script>
 
   export default {
-    name: 'SignInForm'
+    name: 'SignInForm',
+    data () {
+      return {
+        context: 'login context',
+        data: {
+          body: {
+            email: '',
+            password: ''
+          },
+          rememberMe: false
+        },
+        error: null
+      }
+    },
+    mounted () {
+      console.log(this.$auth.redirect())
+      // Can set query parameter here for auth redirect or just do it silently in login redirect.
+    },
+    methods: {
+      login () {
+        var redirect = this.$auth.redirect()
+        this.$auth.login({
+          url: 'users/sign_in',
+          body: this.data.body,
+          rememberMe: this.data.rememberMe,
+          redirect: {name: redirect ? redirect.from.name : 'dashboard'},
+          success () {
+            console.log('success ' + this.context)
+          },
+          error (res) {
+            console.log('error ' + this.context)
+            this.error = res.data
+          }
+        })
+      }
+    }
   }
 </script>
 

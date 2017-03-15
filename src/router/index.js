@@ -10,6 +10,8 @@ import Dashboard from '@/components/Dashboard'
 import SignedInNavbar from '@/components/Navbar'
 import SignInForm from '@/components/SignInForm'
 
+axios.defaults.baseURL = 'http://127.0.0.1:8000'
+
 Vue.use(Router)
 
 Vue.use(VueAxios, axios)
@@ -36,7 +38,7 @@ var router = new Router({
     },
     {
       path: '/login',
-      meta: {auth: undefined},
+      meta: {auth: false},
       components: {
         main: SignInForm,
         navbar: SignedOutNavbar,
