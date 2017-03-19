@@ -9,10 +9,13 @@ module.exports = {
     const devServer = browser.globals.devServerURL
 
     browser
-      .url(devServer)
+      .url(devServer+"/#/dashboard")
       .waitForElementVisible('#app', 5000)
-      .assert.elementPresent('.landing')
-      .assert.containsText('h1', 'Welcome to Your Vue.js App')
+      .assert.elementPresent('.sign-in-form')
+      .assert.containsText('h1','Sign In')
+      .assert.containsText('label.email-address','Email Address')
+      .assert.containsText('label.password', 'Password')
+      .assert.containsText('button.login-button','LOG IN')
       .end()
   }
 }

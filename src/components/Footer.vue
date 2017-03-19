@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer">
+    <footer class='footer'>
     <span v-for='item in footerInformation' class='content'> {{item.content}}  <span class='separator'>{{item.separator}}</span> </span> 
     </footer>
 </template>

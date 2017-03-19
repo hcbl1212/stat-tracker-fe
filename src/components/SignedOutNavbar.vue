@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar topnav" id="topnav">
+  <div class='navbar topnav' id='topnav'>
     <links :links='navLinks'></links>
   </div>
 </template>
@@ -12,8 +12,8 @@
     data () {
       return {
         navLinks: [
-          {path: '/', description: 'Stat Tracker'},
-          {path: '/login', description: 'Sign In', class: 'rightNavbar'}
+          {path: '/', description: 'Stat Tracker', class: 'landing'},
+          {path: '/login', description: 'Sign In', class: 'rightNavbar sign-in'}
         ]
       }
     },

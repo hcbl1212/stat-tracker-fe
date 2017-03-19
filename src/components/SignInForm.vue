@@ -1,20 +1,20 @@
 <template>
-  <div class="form-container">
+  <div class='form-container sign-in-form'>
     <h1> Sign In</h1>
-    <form v-on:submit.prevent="login()">
-      <div class="field-wrap">
-        <label>
-          Email Address<span class="req">*</span>
+    <form v-on:submit.prevent='login()'>
+      <div class='field-wrap'>
+        <label class='email-address'>
+          Email Address<span class='req'>*</span>
         </label>
-        <input v-model="data.body.email" type="email"required autocomplete="off"/>
+        <input v-model='data.body.email' type='mail' required autocomplete='off'/>
       </div>
-      <div class="field-wrap">
-        <label>
-          Password<span class="req">*</span>
+      <div class='field-wrap'>
+        <label class='password'>
+          Password<span class='req'>*</span>
         </label>
-        <input v-model="data.body.password" type="password"required autocomplete="off"/>
+        <input v-model='data.body.password' type='password' required autocomplete='off'/>
       </div> 
-      <button class="button button-block">Log In</button>
+      <button class='button button-block login-button'>Log In</button>
     </form>
   </div>
 </template>
@@ -42,18 +42,22 @@
     },
     methods: {
       login () {
-        var redirect = this.$auth.redirect()
         this.$auth.login({
           url: 'users/sign_in',
-          body: this.data.body,
+          fetchUser: false,
+          token: [{request: 'Authorization', response: 'Authorization', authType: 'bearer', foundIn: 'header'}],
+          params: {
+            email: this.data.body.email,
+            password: this.data.body.password
+          },
           rememberMe: this.data.rememberMe,
-          redirect: {name: redirect ? redirect.from.name : 'dashboard'},
-          success () {
-            console.log('success ' + this.context)
+          redirect: '/dashboard',
+          success (res) {
+            // console.log('succes' + this.context)
           },
           error (res) {
-            console.log('error ' + this.context)
             this.error = res.data
+            console.log('error ' + this.context)
           }
         })
       }

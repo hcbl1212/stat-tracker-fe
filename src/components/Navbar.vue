@@ -1,5 +1,6 @@
 <template>
-  <div class="navbar topnav" id="topnav">
+  <div class='navbar topnav' id='topnav'>
+    <a v-on:click='logout()' href='javascript:void(0);' class='rightSidebar sign-out'>Sign Out</a>
     <links :links='navLinks'></links>
   </div>
 </template>
@@ -12,16 +13,30 @@
     data () {
       return {
         navLinks: [
-          {path: 'dashboard', description: 'Dashboard'},
-          {path: '#', description: 'View Stats'},
-          {path: '#', description: 'Log Stats'},
-          {path: '/', description: 'Sign Out', class: 'rightSidebar'},
-          {path: '#', description: 'Profile', class: 'rightSidebar'}
+          {path: 'dashboard', description: 'Dashboard', class: 'dashboard'},
+          {path: 'view-stat', description: 'View Stats', class: 'view-stat'},
+          {path: 'log-stat', description: 'Log Stats', class: 'log-stat'},
+          {path: 'profile', description: 'Profile', class: 'rightSidebar profile'}
         ]
       }
     },
     components: {
       links: Links
+    },
+    methods: {
+      logout () {
+        this.$auth.logout({
+          url: '/users/sign_out',
+          makeRequest: true,
+          success () {
+            localStorage.clear()
+            console.log('success ' + this.context)
+          },
+          error () {
+            console.log('error ' + this.context)
+          }
+        })
+      }
     }
   }
 </script>
