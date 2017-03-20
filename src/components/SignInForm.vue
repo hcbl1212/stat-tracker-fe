@@ -6,13 +6,13 @@
         <label class='email-address'>
           Email Address<span class='req'>*</span>
         </label>
-        <input v-model='data.body.email' type='mail' required autocomplete='off'/>
+        <input v-model='data.body.email' id="email-address" type='mail' required autocomplete='off'/>
       </div>
       <div class='field-wrap'>
         <label class='password'>
           Password<span class='req'>*</span>
         </label>
-        <input v-model='data.body.password' type='password' required autocomplete='off'/>
+        <input v-model='data.body.password' id="password" type='password' required autocomplete='off'/>
       </div> 
       <button class='button button-block login-button'>Log In</button>
     </form>

@@ -13,10 +13,10 @@
     data () {
       return {
         navLinks: [
-          {path: 'dashboard', description: 'Dashboard', class: 'dashboard'},
-          {path: 'view-stat', description: 'View Stats', class: 'view-stat'},
-          {path: 'log-stat', description: 'Log Stats', class: 'log-stat'},
-          {path: 'profile', description: 'Profile', class: 'rightSidebar profile'}
+          {path: 'dashboard', description: 'Dashboard', class: 'dashboard-link'},
+          {path: 'view-stat', description: 'View Stats', class: 'view-stat-link'},
+          {path: 'log-stat', description: 'Log Stats', class: 'log-stat-link'},
+          {path: 'profile', description: 'Profile', class: 'rightSidebar profile-link'}
         ]
       }
     },
