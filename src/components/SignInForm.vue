@@ -1,18 +1,20 @@
 <template>
   <div class='form-container sign-in-form'>
     <h1> Sign In</h1>
+    <h1 class='error' v-model='error'> {{error}}</h1>
+          
     <form v-on:submit.prevent='login()'>
       <div class='field-wrap'>
         <label class='email-address'>
-          Email Address<span class='req'>*</span>
+          {{placeHolder.email}}<span class='req'>*</span>
         </label>
-        <input v-model='data.body.email' id="email-address" type='mail' required autocomplete='off'/>
+        <input v-model='data.body.email' id="email-address" type='email' required autocomplete='off' v-on:keyup="clearPlaceHolder('email-address')"/>
       </div>
       <div class='field-wrap'>
         <label class='password'>
-          Password<span class='req'>*</span>
+          {{placeHolder.password}}<span class='req'>*</span>
         </label>
-        <input v-model='data.body.password' id="password" type='password' required autocomplete='off'/>
+        <input v-model='data.body.password' id="password" type='password' required autocomplete='off' v-on:keyup="clearPlaceHolder('password')"/>
       </div> 
       <button class='button button-block login-button'>Log In</button>
     </form>
@@ -33,15 +35,20 @@
           },
           rememberMe: false
         },
-        error: null
+        error: null,
+        placeHolder: {
+          password: 'Password',
+          email: 'Email Address'
+        }
       }
     },
     mounted () {
-      console.log(this.$auth.redirect())
-      // Can set query parameter here for auth redirect or just do it silently in login redirect.
+     // console.log(this.$auth.redirect())
     },
     methods: {
       login () {
+        // resetting any earlier errors
+        this.error = null
         this.$auth.login({
           url: 'users/sign_in',
           fetchUser: false,
@@ -53,19 +60,33 @@
           rememberMe: this.data.rememberMe,
           redirect: '/dashboard',
           success (res) {
-            // console.log('succes' + this.context)
+            // setting the user manually because
+            // we return the user differently
+            // than how the jwt module is expecting it
+            this.$auth.user(res.data.user)
           },
           error (res) {
-            this.error = res.data
-            console.log('error ' + this.context)
+            this.error = res.response.data.error.toUpperCase().replace('_', ' ')
           }
         })
+      },
+      clearPlaceHolder (labelId) {
+        var element = document.getElementsByClassName(labelId)[0]
+        if (event.target.value === '') {
+          element.style.display = 'initial'
+        } else {
+          element.style.display = 'none'
+        }
       }
     }
   }
 </script>
 
 <style scoped>
+
+   .error {
+      color: red;
+    }
 
   .form-container {
     background: #66CCFF;;

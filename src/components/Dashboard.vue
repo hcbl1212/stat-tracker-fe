@@ -12,6 +12,9 @@
         viewStats: {},
         logStats: {}
       }
+    },
+    mounted () {
+      // console.dir(this.$auth.user().email)
     }
   }
 </script>
