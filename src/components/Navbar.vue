@@ -30,10 +30,10 @@
           makeRequest: true,
           success () {
             localStorage.clear()
-            console.log('success ' + this.context)
+            // console.log('success ' + this.context)
           },
           error () {
-            console.log('error ' + this.context)
+            // console.log('error ' + this.context)
           }
         })
       }

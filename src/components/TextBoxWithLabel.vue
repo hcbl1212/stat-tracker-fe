@@ -39,7 +39,7 @@
     props: ['label', 'textbox', 'value'],
     methods: {
       clearPlaceHolder (labelClass) {
-        var element = document.getElementsByClassName(labelClass)[0]
+        let element = document.getElementsByClassName(labelClass)[0]
         if (event.target.value === '') {
           element.style.display = 'initial'
         } else {

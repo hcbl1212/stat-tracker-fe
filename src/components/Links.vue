@@ -9,23 +9,8 @@
 <script>
   export default {
     name: 'links',
-    props: ['links'],
-    methods: {
-      logout () {
-        this.$auth.logout({
-          makeRequest: true,
-          success () {
-            localStorage.clear()
-            console.log('success ' + this)
-          },
-          error () {
-            console.log('error ' + this.context)
-          }
-        })
-      }
-    }
+    props: ['links']
   }
-
 </script>
 
 <style scoped>

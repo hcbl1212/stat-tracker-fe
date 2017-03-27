@@ -31,7 +31,7 @@
           },
           rememberMe: false
         },
-        error: null,
+        error: '',
         emailInput: {
           type: 'email',
           id: 'email-address',
@@ -48,8 +48,7 @@
         },
         passwordLabel: {
           placeHolder: 'Password',
-          class: 'password',
-          id: 'password'
+          class: 'password'
         }
       }
     },
@@ -62,7 +61,7 @@
     methods: {
       login () {
         // resetting any earlier errors
-        this.error = null
+        this.error = ''
         this.$auth.login({
           url: 'users/sign_in',
           fetchUser: false,
@@ -83,14 +82,6 @@
             this.error = res.response.data.error.toUpperCase().replace('_', ' ')
           }
         })
-      },
-      clearPlaceHolder (labelId) {
-        var element = document.getElementsByClassName(labelId)[0]
-        if (event.target.value === '') {
-          element.style.display = 'initial'
-        } else {
-          element.style.display = 'none'
-        }
       }
     }
   }
