@@ -64,7 +64,7 @@
         this.error = ''
         this.$auth.login({
           url: 'users/sign_in',
-          fetchUser: false,
+          // fetchUser: false,
           token: [{request: 'Authorization', response: 'Authorization', authType: 'bearer', foundIn: 'header'}],
           params: {
             email: this.data.body.email,
@@ -76,7 +76,9 @@
             // setting the user manually because
             // we return the user differently
             // than how the jwt module is expecting it
-            this.$auth.user(res.data.user)
+            // this.$auth.user(res.data.user)
+            // this.$auth.authenticated = true
+            // this.$auth.currentToken = localStorage.getItem('default-JWT')
           },
           error (res) {
             this.error = res.response.data.error.toUpperCase().replace('_', ' ')
@@ -88,67 +90,4 @@
 </script>
 
 <style scoped>
-
-   .error {
-      color: red;
-    }
-
-  .form-container {
-    background: #66CCFF;;
-    color: white;
-    padding: 10px 20px 40px 20px;
-    max-width: 600px;
-    margin: 40px auto;
-    border-radius: 4px;
-    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
-  }
-
-  .field-wrap {
-    position: relative;
-    margin-bottom: 40px;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .top-row:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-  .top-row > div {
-    float: left;
-    width: 48%;
-    margin-right: 4%;
-  }
-  .top-row > div:last-child {
-    margin: 0;
-  }
-
-  .button {
-    border: 0;
-    outline: none;
-    border-radius: 0;
-    padding: 15px 0;
-    font-size: 2rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    background: #003399;
-    color: #ffffff;
-    -webkit-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-    -webkit-appearance: none;
-  }
-
-  .button:hover, .button:focus {
-    background: #CCFFCC;
-    color: black;
-  }
-
-  .button-block {
-    display: block;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-  }
 </style>

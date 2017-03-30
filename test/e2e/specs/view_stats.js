@@ -20,7 +20,7 @@ module.exports = {
         .waitForElementVisible('body',5000)
         .assert.elementPresent('.landing')
         .assert.containsText('h1', 'Sign In')
-        .setValue('#email-address','bertha.lindgren@example.net')
+        .setValue('#email-address','Standard10@ex.com')
         .setValue('#password','password');
         browser.element('css selector','.login-button',function(result1){
           if(result1.status != -1){

@@ -37,6 +37,12 @@
   export default {
     name: 'textBoxWithLabel',
     props: ['label', 'textbox', 'value'],
+    mounted () {
+      // if is an update lets hide the potential * from showing up
+      if (this.$el.lastChild.value !== '') {
+        this.$el.firstChild.style.display = 'none'
+      }
+    },
     methods: {
       clearPlaceHolder (labelClass) {
         let element = document.getElementsByClassName(labelClass)[0]

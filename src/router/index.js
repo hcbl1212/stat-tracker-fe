@@ -75,9 +75,10 @@ Vue.use(VueAuth, {
   auth: require('@websanova/vue-auth/drivers/auth/bearer.js'),
   http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
   router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
-  fetchUser: false,
-  loginData: {fetchUser: false},
-  refreshData: {enabled: false},
+  rolesVar: 'permission',
+  parseUserData: function (data) {
+    return data.user
+  },
   token: [{request: 'Authorization', response: 'Authorization', authType: 'bearer', foundIn: 'header'}],
   tokenName: 'JWT'
 })
