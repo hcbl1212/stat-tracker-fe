@@ -74,11 +74,6 @@
           redirect: '/dashboard',
           success (res) {
             // setting the user manually because
-            // we return the user differently
-            // than how the jwt module is expecting it
-            // this.$auth.user(res.data.user)
-            // this.$auth.authenticated = true
-            // this.$auth.currentToken = localStorage.getItem('default-JWT')
           },
           error (res) {
             this.error = res.response.data.error.toUpperCase().replace('_', ' ')

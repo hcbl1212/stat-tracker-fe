@@ -31,7 +31,7 @@ module.exports = {
               if(result1.status != -1){
                 browser.click('.profile-link')
                 .waitForElementVisible('.profile',5000)
-                .assert.containsText('h1','this is my profile')
+                .assert.containsText('h1','Dr. Rupert')
                 .end()
               }
             });

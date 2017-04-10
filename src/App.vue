@@ -24,9 +24,9 @@ export default {
     height: 100%
   }
 
-   .error {
-      color: red;
-    }
+  .error {
+     color: red;
+   }
 
   .form-container {
     background: #66CCFF;;
