@@ -70,11 +70,11 @@ describe('TextBoxWithLabel', () => {
     var e = document.createEvent('HTMLEvents')
     e.initEvent('keyup', true, true)
     e.keyCode = 13
+    vm.$el.querySelector('#email-address').value = 'happy'
+    vm.$el.querySelector('#email-address').dispatchEvent(e)
     Vue.nextTick(() => {
       done()
-      vm.$el.querySelector('input').value = 'happy'
-      vm.$el.querySelector('input').dispatchEvent(e)
-      expect(vm.$el.querySelector('label').textContent).to.equal('')
+      expect(vm.$el.querySelector('label.email-address').style.display).to.equal('none')
     })
   })
   it('should not clear the the label after a key event with text in the input if the input is blank', done => {
@@ -113,7 +113,7 @@ describe('TextBoxWithLabel', () => {
     Vue.nextTick(() => {
       done()
       vm.$el.querySelector('input').dispatchEvent(e)
-      expect(vm.$el.querySelector('label').textContent).to.equal('Email Address')
+      expect(vm.$el.querySelector('label').textContent).to.equal('\n    Email Address*')
     })
   })
 })

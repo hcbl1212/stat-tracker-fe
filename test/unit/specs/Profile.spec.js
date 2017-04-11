@@ -1,25 +1,22 @@
 import Vue from 'vue'
 import Profile from '@/components/Profile'
-import InputAndLabel from '@/utilities/inputAndLabel.js'
 
 describe('Profile.vue', () => {
-  it('should set the user', () => {
-    let inputs = [
-      new InputAndLabel({placeHolder: 'Full Name', class: 'name'}, {type: 'name', id: 'name', required: true}),
-      new InputAndLabel({placeHolder: 'Email', class: 'email'}, {type: 'email', id: 'email', required: true}),
-      new InputAndLabel({placeHolder: 'Confirm Email', class: 'confirm-email'}, {type: 'email', id: 'confirm-email', required: true}),
-      new InputAndLabel({placeHolder: 'Password', class: 'password'}, {type: 'password', id: 'password', required: true}),
-      new InputAndLabel({placeHolder: 'Confirm Password', class: 'confirm-password'}, {type: 'password', id: 'confirm-password', required: true})
-    ]
+  let server
+  beforeEach(function () {
+    server = sinon.fakeServer.create()
+  })
 
+  afterEach(function () {
+    server.restore()
+  })
+
+  it('should set the user', () => {
     const Constructor = Vue.extend(Profile)
     const vm = new Constructor().$mount()
-    for (let input of inputs) {
-      vm.$data[input.getLabel().dataName] = input.getLabel()
-      vm.$data[input.getInput().dataName] = input.getInput()
-    }
     vm.$auth.user({id: 159, name: 'Dr. Brian', email: 'brian@this.com'})
     vm.user = vm.$auth.user()
+    vm.$data.cloneUser = {...vm.$auth.user()}
     Vue.nextTick(() => {
       expect(vm.user.id).to.equal(159)
       expect(vm.user.name).to.equal('Dr. Brian')
@@ -35,6 +32,95 @@ describe('Profile.vue', () => {
       .to.equal(' Dr. Brian\'s Profile')
       expect(vm.$el.querySelector('#name').value).to.equal('Dr. Brian')
       expect(vm.$el.querySelector('#email').value).to.equal('brian@this.com')
+    })
+  })
+
+  it('should not update the users information if it is dirty but the confirm do not match original', () => {
+    const Constructor = Vue.extend(Profile)
+    const vm = new Constructor().$mount()
+    server.respondWith('PUT', '/users/' + vm.user.id, [200, {}, ''])
+    vm.$auth.user({id: 159, name: 'Dr. Brian', email: 'brian@this.com'})
+    vm.user = vm.$auth.user()
+    vm.$data.cloneUser = {id: 159, name: 'Dr. Brian', email: 'brian999@this.com'}
+    Vue.nextTick(() => {
+      expect(vm.$el.querySelector(' h1').textContent)
+      .to.equal(' Dr. Brian\'s Profile')
+      expect(vm.$el.querySelector('#name').value).to.equal('Dr. Brian')
+      expect(vm.$el.querySelector('#email').value).to.equal('brian@this.com')
+      let e = document.createEvent('HTMLEvents')
+      e.initEvent('keyup', true, true)
+      e.keyCode = 13
+      vm.$el.querySelector('#name').value = 'Dr. Brian Ludwig'
+      vm.$el.querySelector('#email').value = 'brian1@this.com'
+      vm.$el.querySelector('#confirm-email').value = 'brian2@this.com'
+      vm.$el.querySelector('#password').value = 'password'
+      vm.$el.querySelector('#confirm-password').value = 'passworda'
+      vm.$el.querySelector('button.button').click()
+      expect(vm.user.email).to.equal('brian@this.com')
+      expect(vm.user.name).to.equal('Dr. Brian')
+    })
+  })
+
+  it('should update the users information', () => {
+    const Constructor = Vue.extend(Profile)
+    const vm = new Constructor().$mount()
+    server.respondWith('PUT', '/users/' + vm.user.id, [200, {}, ''])
+    Vue.nextTick(() => {
+      expect(vm.$el.querySelector(' h1').textContent)
+      .to.equal(' Dr. Brian\'s Profile')
+      expect(vm.$el.querySelector('#name').value).to.equal('Dr. Brian')
+      expect(vm.$el.querySelector('#email').value).to.equal('brian@this.com')
+      let e = document.createEvent('HTMLEvents')
+      e.initEvent('keyup', true, true)
+      e.keyCode = 13
+      vm.$el.querySelector('#name').value = 'Dr. Brian Ludwig'
+      vm.$el.querySelector('#name').dispatchEvent(e)
+      vm.$el.querySelector('#email').value = 'brian1@this.com'
+      vm.$el.querySelector('#email').dispatchEvent(e)
+      vm.$el.querySelector('#confirm-email').value = 'brian1@this.com'
+      vm.$el.querySelector('#confirm-email').dispatchEvent(e)
+      vm.$el.querySelector('#password').value = 'password'
+      vm.$el.querySelector('#password').dispatchEvent(e)
+      vm.$el.querySelector('#confirm-password').value = 'password'
+      vm.$el.querySelector('#confirm-password').dispatchEvent(e)
+      vm.$el.querySelector('button.button').click()
+      Vue.nextTick(() => {
+        expect(vm.$el.querySelector(' h1').textContent)
+        .to.equal(' Dr. Brian Ludwig\'s Profile')
+        expect(vm.user.name).to.equal('Dr. Brian Ludwig')
+      })
+    })
+  })
+
+  it('should update the users information if it is dirty but the confirm match original', () => {
+    const Constructor = Vue.extend(Profile)
+    const vm = new Constructor().$mount()
+    server.respondWith('PUT', '/users/' + vm.user.id, [200, {}, ''])
+    vm.$data.cloneUser = {id: 159, name: 'Dr. Brian', email: 'brian999@this.com'}
+    Vue.nextTick(() => {
+      expect(vm.$el.querySelector(' h1').textContent)
+      .to.equal(' Dr. Brian\'s Profile')
+      expect(vm.$el.querySelector('#name').value).to.equal('Dr. Brian')
+      expect(vm.$el.querySelector('#email').value).to.equal('brian@this.com')
+      let e = document.createEvent('HTMLEvents')
+      e.initEvent('keyup', true, true)
+      e.keyCode = 13
+      vm.$el.querySelector('#name').value = 'Dr. Brian Ludwig'
+      vm.$el.querySelector('#name').dispatchEvent(e)
+      vm.$el.querySelector('#email').value = 'brian1@this.com'
+      vm.$el.querySelector('#email').dispatchEvent(e)
+      vm.$el.querySelector('#confirm-email').value = 'brian1@this.com'
+      vm.$el.querySelector('#confirm-email').dispatchEvent(e)
+      vm.$el.querySelector('#password').value = 'password'
+      vm.$el.querySelector('#password').dispatchEvent(e)
+      vm.$el.querySelector('#confirm-password').value = 'password'
+      vm.$el.querySelector('#confirm-password').dispatchEvent(e)
+      vm.$el.querySelector('button.button').click()
+      Vue.nextTick(() => {
+        expect(vm.$el.querySelector(' h1').textContent)
+        .to.equal(' Dr. Brian Ludwig\'s Profile')
+        expect(vm.user.name).to.equal('Dr. Brian Ludwig')
+      })
     })
   })
 })

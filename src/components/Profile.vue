@@ -53,11 +53,13 @@
         this.$data[input.getLabel().dataName] = input.getLabel()
         this.$data[input.getInput().dataName] = input.getInput()
       }
+      this.$data.cloneUser = {...this.user}
     },
     data () {
       return {
         context: 'profile context',
         error: '',
+        cloneUser: {},
         nameInput: {
         },
         nameLabel: {
@@ -114,6 +116,7 @@
               if (betaElement.value !== alphaElement.value) {
                 errorElement.innerText = idToFind.charAt(0).toUpperCase() + idToFind.substr(1) + ' and confirmation do not match.'
                 noError = false
+                return
               } else {
                 errorElement.innerText = ''
               }
@@ -125,7 +128,7 @@
             tempUser[idToFind] = element.value
           }
         }// end of for
-        if (noError) {
+        if (noError === true) {
           this.user = Object.assign(this.user, tempUser)
         }
       }

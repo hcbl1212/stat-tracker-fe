@@ -45,7 +45,7 @@
     },
     methods: {
       clearPlaceHolder (labelClass) {
-        let element = document.getElementsByClassName(labelClass)[0]
+        let element = this.$el.getElementsByClassName(labelClass)[0]
         if (event.target.value === '') {
           element.style.display = 'initial'
         } else {
