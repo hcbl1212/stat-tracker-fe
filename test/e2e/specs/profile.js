@@ -32,7 +32,24 @@ module.exports = {
                 browser.click('.profile-link')
                 .waitForElementVisible('.profile',5000)
                 .assert.containsText('h1','Dr. Rupert')
-                .end()
+                browser.element('css selector', '.update-profile', function(result3){
+                  if(result1.status != -1){
+                   browser.expect.element('.update-profile').text.to.equal('UPDATE NAME')   
+                   browser.assert.elementPresent('#originalPassword')
+                   .setValue('#originalPassword','poop')
+                   browser.click('.update-profile')
+                   .waitForElementVisible('.error',5000)
+                   .assert.elementPresent('.error')
+                   .assert.containsText('.error','Password does not match current user\'s password.')
+                   browser.clearValue('#originalPassword')
+                   .setValue('#originalPassword','password')
+                   browser.click('.update-profile')
+                   .waitForElementVisible('.saved',5000)
+                   .assert.elementPresent('.saved')
+                   .assert.containsText('.saved','Profile Successfully Updated.')
+                   .end()
+                  } 
+                }); 
               }
             });
           } 
