@@ -14,7 +14,7 @@
     />
 
     <input
-       v-else-if="textbox.type === 'password'"
+      v-else-if="textbox.type === 'password'"
       ref='input'
       v-on:input="emitInput($event.target.value)" :value='value'
       :id='textbox.id' type='password'
@@ -23,7 +23,7 @@
     />
 
     <input
-       v-else 
+      v-else 
       ref='input'
       v-on:input="emitInput($event.target.value)" :value='value'
        type='textbox':id='textbox.id'
@@ -41,6 +41,13 @@
       // if is an update lets hide the potential * from showing up
       if (this.$el.lastChild.value !== '') {
         this.$el.firstChild.style.display = 'none'
+      }
+    },
+    watch: {
+      value: function (val) {
+        if (val === undefined) {
+          this.$el.firstChild.style.display = 'initial'
+        }
       }
     },
     methods: {

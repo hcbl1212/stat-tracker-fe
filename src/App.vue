@@ -24,10 +24,17 @@ export default {
     height: 100%
   }
 
+  .saved {
+    color: #CCFFCC; 
+  }
+
   .error {
      color: red;
    }
 
+   a {
+    text-decoration: none;
+   }
   .form-container {
     background: #66CCFF;;
     color: white;
@@ -45,16 +52,19 @@ export default {
     margin-left: auto;
     margin-right: auto;
   }
+
   .top-row:after {
     content: "";
     display: table;
     clear: both;
   }
+
   .top-row > div {
     float: left;
     width: 48%;
     margin-right: 4%;
   }
+
   .top-row > div:last-child {
     margin: 0;
   }
@@ -79,12 +89,17 @@ export default {
     background: #CCFFCC;
     color: black;
   }
+  
+  .font-size-x-large {
+    font-size: x-large; 
+  }
 
   .button-block {
     display: block;
     width: 50%;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 15px;
   }
 
 </style>
