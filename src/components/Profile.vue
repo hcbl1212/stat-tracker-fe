@@ -59,21 +59,8 @@
 </template>
 
 <script>
-  import TextBoxWithLabel from './TextBoxWithLabel.vue'
-  import Tab from './Tab.vue'
-  import Tabs from './Tabs.vue'
-  import UserForm from './UserForm.vue'
-  import InputAndLabel from '@/utilities/inputAndLabel.js'
-  import UserStore from '@/store/modules/user.js'
-
-  let inputs = [
-    new InputAndLabel({placeHolder: 'Full Name', class: 'name'}, {type: 'name', id: 'name', required: true}),
-    new InputAndLabel({placeHolder: 'Email', class: 'email'}, {type: 'email', id: 'email', required: true}),
-    new InputAndLabel({placeHolder: 'Confirm Email', class: 'confirm-email'}, {type: 'email', id: 'confirm-email', required: true}),
-    new InputAndLabel({placeHolder: 'Password', class: 'password'}, {type: 'password', id: 'password', required: true}),
-    new InputAndLabel({placeHolder: 'Confirm Password', class: 'confirm-password'}, {type: 'password', id: 'confirm-password', required: true}),
-    new InputAndLabel({placeHolder: 'Original Password', class: 'originalPassword'}, {type: 'password', id: 'originalPassword', required: true})
-  ]
+  import {TextBoxWithLabel, Tab, Tabs, UserForm, ProfileTextBoxesWithLabels, UserStore} from '@/imports/profile_imports.js'
+  let inputs = new ProfileTextBoxesWithLabels().getInputs()
 
   export default {
     name: 'profile',
