@@ -1,9 +1,6 @@
 // store for user
 
-import Vue from 'vue'
-import Vuex from 'vuex'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+import {Vue, Vuex, axios, VueAxios} from '@/imports/store_imports.js'
 Vue.use(VueAxios, axios)
 Vue.use(Vuex)
 

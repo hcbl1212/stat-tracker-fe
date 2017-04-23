@@ -61,7 +61,7 @@ var router = new Router({
       path: '/log-stat',
       meta: {auth: true},
       components: {
-        main: require('@/components/LogStat.vue'),
+        main: require('@/components/MetricRoleInstance.vue'),
         navbar: require('@/components/Navbar.vue'),
         footer: require('@/components/Footer.vue')
       }

@@ -7,7 +7,7 @@
   import UserStore from '@/store/modules/user.js'
 
   export default {
-    name: 'form',
+    name: 'user_form',
     mounted () {
       this.$store = UserStore
     },
