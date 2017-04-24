@@ -59,13 +59,13 @@
 </template>
 
 <script>
-  import {TextBoxWithLabel, Tab, Tabs, UserForm, ProfileTextBoxesWithLabels, UserStore} from '@/imports/profile_imports.js'
+  import {TextBoxWithLabel, Tab, Tabs, UserForm, ProfileTextBoxesWithLabels, store} from '@/imports/profile_imports.js'
   let inputs = new ProfileTextBoxesWithLabels().getInputs()
 
   export default {
     name: 'profile',
     beforeCreate () {
-      this.$store = UserStore
+      this.$store = store
       this.$store.commit('SET_USER', this.$auth.user())
     },
     mounted () {
