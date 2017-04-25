@@ -5,17 +5,15 @@
     <h1 v-show="updateStatus.status === 200" class='saved'> {{updateStatus.message}}</h1>
     <mriForm>
       <label>Roles</label>
-      <select @change='updateRoleAndAssociations($event)'>
-        <option v-for='role in userAndAssociations.roles' :value='role.id'>{{role.name}}</option> 
+      <select @change='updateRoleAndAssociations($event)' v-model='selectedRole'>
+        <option v-for='role in userAndAssociations.roles' :value='role.id' >{{role.name}}</option> 
       </select>
-      <label>Metrics</label>
-      <select v-show='roleAndAssociations.metrics !== undefined'>
+      <label v-show='roleAndAssociations.metrics !== undefined'>Metrics</label>
+      <select v-show='roleAndAssociations.metrics !== undefined' v-model='selectedMetric'>
         <option v-for='metric in roleAndAssociations.metrics' :value='metric.id'>{{metric.description}}</option> 
       </select>
-      <label>Count</label>
-      <select >
-        <option v-for='instance in metricRoleInstances' :value='instance.id'>{{instance.count}}</option> 
-      </select>
+      <label v-show='showMRICount'>Count</label>
+      <label v-show='showMRICount'>{{metricRoleInstances}}</label>
     </mriForm> 
   </div>
 </template>
@@ -28,15 +26,16 @@
       this.$store = store
       this.$store.commit('SET_USER', this.$auth.user())
       this.$store.dispatch('GET_USER_AND_ASSOCIATIONS')
-      this.$store.dispatch('GET_METRIC_ROLE_INSTANCES')
-      this.$store.dispatch('GET_ROLES')
     },
     mounted () {
       // console.log(this.$store)
     },
     data () {
       return {
-        context: 'metric role instance context'
+        context: 'metric role instance context',
+        selectedRole: 'Select Role',
+        selectedMetric: 'Select Metric',
+        showMRICount: false
       }
     },
     computed: {
@@ -50,6 +49,9 @@
       },
       userAndAssociations: {
         get () {
+          if (this.$store.getters.userAndAssociations.roles !== undefined) {
+            this.$store.getters.userAndAssociations.roles.push({name: 'Select Role', id: 'Select Role'})
+          }
           return this.$store.getters.userAndAssociations
         }
       },
@@ -71,7 +73,7 @@
       },
       metricRoleInstances: {
         get () {
-          return this.$store.getters.getMetricRoleInstancesByUser
+          return this.$store.getters.metricRoleInstances.map((instance) => instance.count).reduce((first, second) => first + second, 0)
         }
       },
       role: {
@@ -86,11 +88,15 @@
       },
       roles: {
         get () {
+          this.$store.getters.roles.push({name: 'Select Role'})
           return this.$store.getters.roles
         }
       },
       roleAndAssociations: {
         get () {
+          if (this.$store.getters.roleAndAssociations.metrics !== undefined) {
+            this.$store.getters.roleAndAssociations.metrics.push({description: 'Select Metric', id: 'Select Metric'})
+          }
           return this.$store.getters.roleAndAssociations
         }
       }
@@ -101,6 +107,14 @@
     methods: {
       updateRoleAndAssociations (event) {
         this.$store.dispatch('GET_ROLE_AND_ASSOCIATIONS', event.target.value)
+        this.selectedMetric = 'Select Metric'
+        this.showMRICount = true
+      }
+    },
+    watch: {
+      selectedMetric (val) {
+        // we need to reset the count if this value changes
+        this.$store.dispatch('GET_METRIC_ROLE_INSTANCES', {user: this.user.id, metric: this.selectedMetric, role: this.selectedRole})
       }
     }
   }

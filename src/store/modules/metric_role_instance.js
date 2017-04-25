@@ -28,8 +28,10 @@ const actions = {
       commit('UPDATE_METRIC_ROLE_INSTANCE', state.metricRoleInstance)
     })
   },
-  GET_METRIC_ROLE_INSTANCES ({commit, metricRoleInstances}) {
-    Vue.axios.get('http://127.0.0.1:8000/instances/')
+  GET_METRIC_ROLE_INSTANCES ({commit, metricRoleInstances}, filters) {
+    Vue.axios.get('http://127.0.0.1:8000/instances/', {
+      params: filters
+    })
     .then((response) => {
       commit('GET_METRIC_ROLE_INSTANCES', response.data.data.metric_role_instances)
     })
