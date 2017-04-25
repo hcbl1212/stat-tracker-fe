@@ -1,11 +1,10 @@
 // store for user
-
-import {Vue, Vuex, axios, VueAxios} from '@/imports/store_imports.js'
+import {Vue, axios, VueAxios} from '@/imports/store_imports.js'
 Vue.use(VueAxios, axios)
-Vue.use(Vuex)
 
 const state = {
   user: {},
+  userAndAssociations: {},
   updateStatus: {
     status: null,
     message: ''
@@ -21,6 +20,16 @@ const actions = {
   },
   UPDATE_STATUS ({ commit, state }) {
     commit('UPDATE_STATUS', state.updateStatus)
+  },
+  GET_USER_AND_ASSOCIATIONS ({commit, user}, id) {
+    let idToUse = id || state.user.id
+    Vue.axios.get('http://127.0.0.1:8000/full/users/' + idToUse)
+    .then((response) => {
+      commit('GET_USER_AND_ASSOCIATIONS', response.data.data.user)
+    })
+    .catch(e => {
+      commit('GET_USER_AND_ASSOCIATIONS', state.userAndAssociations)
+    })
   },
   UPDATE_USER ({ commit, state }) {
     Vue.axios.put('http://127.0.0.1:8000/users/' + state.user.id, state.user)
@@ -48,17 +57,21 @@ const mutations = {
   },
   UPDATE_STATUS (state, status) {
     state.updateStatus = status
+  },
+  GET_USER_AND_ASSOCIATIONS (state, userAndAssociations) {
+    state.userAndAssociations = userAndAssociations
   }
 }
 
 const getters = {
   user: state => state.user,
-  updateStatus: state => state.updateStatus
+  updateStatus: state => state.updateStatus,
+  userAndAssociations: state => state.userAndAssociations
 }
 
-export default new Vuex.Store({
+export default {
   state,
   actions,
   mutations,
   getters
-})
+}
