@@ -4,12 +4,12 @@
   </form>
 </template>
 <script>
-  import UserStore from '@/store/modules/user.js'
+  import store from '@/store/index.js'
 
   export default {
     name: 'user_form',
     mounted () {
-      this.$store = UserStore
+      this.$store = store
     },
     data () {
       return {

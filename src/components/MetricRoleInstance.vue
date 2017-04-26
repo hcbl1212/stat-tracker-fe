@@ -3,7 +3,7 @@
     <h1> {{user.name}} </h1>
     <h1 v-show="updateStatus.status === 500" class='error'> {{updateStatus.message}}</h1>
     <h1 v-show="updateStatus.status === 200" class='saved'> {{updateStatus.message}}</h1>
-    <mriForm>
+    <mriForm :user='user.id' :role='selectedRole' :metric='selectedMetric' :count='count'>
       <label>Roles</label>
       <select @change='updateRoleAndAssociations($event)' v-model='selectedRole'>
         <option v-for='role in userAndAssociations.roles' :value='role.id' >{{role.name}}</option> 
@@ -12,14 +12,19 @@
       <select v-show='roleAndAssociations.metrics !== undefined' v-model='selectedMetric'>
         <option v-for='metric in roleAndAssociations.metrics' :value='metric.id'>{{metric.description}}</option> 
       </select>
-      <label v-show='showMRICount'>Count</label>
-      <label v-show='showMRICount'>{{metricRoleInstances}}</label>
+      <div class='field-wrap' style="width:75%;">
+        <textBox v-show='showMRICount' ref="metricValue" :label='metricValueLabel'
+        :textbox='metricValueInput' v-model='count' value=''></textBox>
+      </div>
+      <button class='button button-block create-mri font-size-x-large'>Add Logged Event</button>
     </mriForm> 
   </div>
 </template>
 <script>
   import store from '@/store/index.js'
   import MRIForm from '@/components/MetricRoleInstanceForm.vue'
+  import InputAndLabel from '@/utilities/inputAndLabel.js'
+  import TextBoxWithLabel from '@/components/TextBoxWithLabel.vue'
   export default {
     name: 'MetricRoleInstance',
     beforeCreate () {
@@ -28,6 +33,9 @@
       this.$store.dispatch('GET_USER_AND_ASSOCIATIONS')
     },
     mounted () {
+      let input = new InputAndLabel({placeHolder: 'Enter Value', class: 'metricValue'}, {type: 'text', id: 'metricValue', required: true})
+      this.$data[input.getLabel().dataName] = input.getLabel()
+      this.$data[input.getInput().dataName] = input.getInput()
       // console.log(this.$store)
     },
     data () {
@@ -35,7 +43,12 @@
         context: 'metric role instance context',
         selectedRole: 'Select Role',
         selectedMetric: 'Select Metric',
-        showMRICount: false
+        showMRICount: false,
+        metricValueInput: {
+        },
+        metricValueLabel: {
+        },
+        count: ''
       }
     },
     computed: {
@@ -68,7 +81,8 @@
           return this.$store.getters.metricRoleInstance
         },
         set (metricRoleInstance) {
-          this.$store.dispatch('UPDATE_METRIC_ROLE_INSTANCE', metricRoleInstance)
+          console.log('create a new one')
+          this.$store.dispatch('CREATE_METRIC_ROLE_INSTANCE', metricRoleInstance)
         }
       },
       metricRoleInstances: {
@@ -102,7 +116,8 @@
       }
     },
     components: {
-      mriForm: MRIForm
+      mriForm: MRIForm,
+      textBox: TextBoxWithLabel
     },
     methods: {
       updateRoleAndAssociations (event) {

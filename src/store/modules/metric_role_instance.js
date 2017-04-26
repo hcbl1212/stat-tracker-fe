@@ -8,15 +8,24 @@ const state = {
   metricRoleInstances: []
 }
 const actions = {
+  CREATE_METRIC_ROLE_INSTANCE ({commit, metricRoleInstance}, metricRoleInstanceValues) {
+    Vue.axios.get('http://127.0.0.1:8000/instances/create', {
+      params: metricRoleInstanceValues
+    })
+    .then((response) => {
+      commit('UPDATE_METRIC_ROLE_INSTANCE', response.data.data.metric_role_instance)
+    })
+    .catch(e => {
+      commit('UPDATE_METRIC_ROLE_INSTANCE', state.metricRoleInstance)
+    })
+  },
   UPDATE_METRIC_ROLE_INSTANCE ({commit, metricRoleInstance}) {
     Vue.axios.put('http://127.0.0.1:8000/instances/' + state.metricRoleInstance.id, state.metricRoleInstance)
     .then((response) => {
       commit('UPDATE_METRIC_ROLE_INSTANCE', response.data.data.metric_role_instance)
-      commit('UPDATE_STATUS', {status: 200, message: 'Stat Successfully Updated.'})
     })
     .catch(e => {
       commit('UPDATE_METRIC_ROLE_INSTANCE', state.metricRoleInstance)
-      commit('UPDATE_STATUS', {status: 500, message: e.response.data.message})
     })
   },
   GET_METRIC_ROLE_INSTANCE ({commit, metricRoleInstance}) {
