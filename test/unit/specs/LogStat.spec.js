@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import LogStat from '@/components/LogStat'
+import LogStat from '@/components/MetricRoleInstance'
 
 describe('LogStat.vue', () => {
   it('should render correct contents', () => {

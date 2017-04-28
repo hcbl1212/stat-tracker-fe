@@ -1,6 +1,7 @@
 // For authoring Nightwatch tests, see
-// http://nightwatchjs.org/guide#usage
-
+// http://nightwatchjs.org/guide#usagea
+// #NOTE:::: if this tests fails make sure the user you are loggin in with
+// has a role with value 1 and has a metric with an id of one as well
 module.exports = {
   'default e2e tests': function (browser) {
     // automatically uses dev Server port from /config.index.js
@@ -28,15 +29,30 @@ module.exports = {
             .waitForElementVisible('.dashboard',5000)
             .assert.containsText('h1','I am the the dashboard');
             browser.element('css selector','.log-stat-link',function(result2){
-              if(result1.status != -1){
+              if(result2.status != -1){
                 browser.click('.log-stat-link')
-                .waitForElementVisible('.log-stat',5000)
-                .assert.containsText('h1','I am the Log Stat template')
-                .end()
-              }
+                .pause(5000)
+                .waitForElementVisible('.metric-role-instance',7000)
+                .assert.containsText('h1','Dr. Rupert Spencer DDS Log Stat')
+                .expect.element("#metric-select").to.have.css('display').which.equals('none')
+                browser.element('css selector','#role-select',function(result3){
+                  if(result3.status != -1){
+                    browser.click('select[id="role-select"] option[value="1"]')
+                    .pause(5000)
+                    .waitForElementVisible('#metric-select',7000)
+                    browser.element('css selector','#metric-select',function(result4){
+                      if(result4.status != -1){
+                        browser.click('select[id="metric-select"] option[value="1"]')
+                        .waitForElementVisible('#metricValue',5000)
+                        .end()
+                      }
+                    });
+                  }
+                });
+              } 
             });
-          } 
-        })
+          }
+        }); 
       }
     }); 
   }

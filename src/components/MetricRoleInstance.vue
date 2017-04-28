@@ -1,16 +1,18 @@
 <template>
   <div class="form-container metric-role-instance" style='max-width:700px;'>
-    <h1> {{user.name}} </h1>
+    <h1> {{user.name}} Log Stat </h1>
     <h1 v-show="updateStatus.status === 500" class='error'> {{updateStatus.message}}</h1>
     <h1 v-show="updateStatus.status === 200" class='saved'> {{updateStatus.message}}</h1>
     <mriForm :user='user.id' :role='selectedRole' :metric='selectedMetric' :count='count'>
       <label>Roles</label>
-      <select @change='updateRoleAndAssociations($event)' v-model='selectedRole'>
-        <option v-for='role in userAndAssociations.roles' :value='role.id' >{{role.name}}</option> 
+      <select v-model='selectedRole' id="role-select">
+        <option v-for='role in userAndAssociations.roles' :value='role.id' 
+        :disabled="role.id === 'Select Role'">{{role.name}}</option> 
       </select>
-      <label v-show='roleAndAssociations.metrics !== undefined'>Metrics</label>
-      <select v-show='roleAndAssociations.metrics !== undefined' v-model='selectedMetric'>
-        <option v-for='metric in roleAndAssociations.metrics' :value='metric.id'>{{metric.description}}</option> 
+      <label v-show='showMRIMetric'>Metrics</label>
+      <select v-show='showMRIMetric' v-model='selectedMetric' id="metric-select">
+        <option v-for='metric in roleAndAssociations.metrics' :value='metric.id' 
+        :disabled="metric.id === 'Select Metric'">{{metric.description}}</option> 
       </select>
       <div class='field-wrap' style="width:75%;">
         <textBox v-show='showMRICount' ref="metricValue" :label='metricValueLabel'
@@ -33,16 +35,16 @@
       this.$store.dispatch('GET_USER_AND_ASSOCIATIONS')
     },
     mounted () {
-      let input = new InputAndLabel({placeHolder: 'Enter Value', class: 'metricValue'}, {type: 'text', id: 'metricValue', required: true})
+      let input = new InputAndLabel({placeHolder: 'Enter Value', class: 'metricValue'}, {type: 'number', id: 'metricValue', required: true})
       this.$data[input.getLabel().dataName] = input.getLabel()
       this.$data[input.getInput().dataName] = input.getInput()
-      // console.log(this.$store)
     },
     data () {
       return {
         context: 'metric role instance context',
         selectedRole: 'Select Role',
         selectedMetric: 'Select Metric',
+        showMRIMetric: false,
         showMRICount: false,
         metricValueInput: {
         },
@@ -120,16 +122,17 @@
       textBox: TextBoxWithLabel
     },
     methods: {
-      updateRoleAndAssociations (event) {
-        this.$store.dispatch('GET_ROLE_AND_ASSOCIATIONS', event.target.value)
-        this.selectedMetric = 'Select Metric'
-        this.showMRICount = true
-      }
     },
     watch: {
       selectedMetric (val) {
         // we need to reset the count if this value changes
         this.$store.dispatch('GET_METRIC_ROLE_INSTANCES', {user: this.user.id, metric: this.selectedMetric, role: this.selectedRole})
+        this.showMRICount = true
+      },
+      selectedRole (val) {
+        this.$store.dispatch('GET_ROLE_AND_ASSOCIATIONS', val)
+        this.selectedMetric = 'Select Metric'
+        this.showMRIMetric = true
       }
     }
   }

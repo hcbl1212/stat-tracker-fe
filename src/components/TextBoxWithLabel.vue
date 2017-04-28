@@ -13,6 +13,15 @@
       v-on:keyup="clearPlaceHolder(label.class)"
     />
 
+    <input 
+      v-else-if="textbox.type === 'number'"
+      ref='input'
+      v-on:input="emitInput($event.target.value)" :value='value'
+      :id='textbox.id' type='number'
+      :required='textbox.required' autocomplete='off'
+      v-on:keyup="clearPlaceHolder(label.class)"
+    />
+
     <input
       v-else-if="textbox.type === 'password'"
       ref='input'
