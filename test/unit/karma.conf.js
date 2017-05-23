@@ -12,7 +12,7 @@ module.exports = function (config) {
     //    http://karma-runner.github.io/0.13/config/browsers.html
     // 2. add it to the `browsers` array below.
     browsers: ['PhantomJS'],
-    frameworks: ['mocha', 'sinon-chai'],
+    frameworks: ['mocha', 'sinon-chai', 'moxios'],
     reporters: ['spec', 'coverage'],
     files: [
       '../../node_modules/babel-polyfill/dist/polyfill.js',
@@ -31,6 +31,19 @@ module.exports = function (config) {
         { type: 'lcov', subdir: '.' },
         { type: 'text-summary' }
       ]
-    }
+    },
+    customLaunchers: {
+      'PhantomJS_custom': {
+         base: 'PhantomJS',
+         options: {
+           windowName: 'my-window',
+           settings: {
+             webSecurityEnabled: false
+           },
+        },
+        flags: ['--load-images=true'],
+        debug: true
+      }
+    },
   })
 }

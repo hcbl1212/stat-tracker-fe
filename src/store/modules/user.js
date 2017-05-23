@@ -34,6 +34,7 @@ const actions = {
   UPDATE_USER ({ commit, state }) {
     Vue.axios.put('http://127.0.0.1:8000/users/' + state.user.id, state.user)
     .then((response) => {
+      console.log('success update user')
       commit('UPDATE_USER', response.data.data.user)
       commit('UPDATE_STATUS', {status: 200, message: 'Profile Successfully Updated.'})
     })

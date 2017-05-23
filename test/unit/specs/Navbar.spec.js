@@ -1,27 +1,33 @@
 import Vue from 'vue'
 import Navbar from '@/components/Navbar'
 import Router from '@/router/index.js'
+import * as moxios from 'moxios'
 
 describe('Navbar', () => {
-  let server
   beforeEach(function () {
-    server = sinon.fakeServer.create()
+    moxios.install()
   })
 
   afterEach(function () {
-    server.restore()
+    moxios.uninstall()
   })
 
   it('should logout the user', done => {
     Vue.use(Router)
-    server.respondWith('POST', '/users/sign_out', [200, {}, ''])
     const Constructor = Vue.extend(Navbar)
     const vm = new Constructor({router: Router}).$mount()
     let evt = document.createEvent('HTMLEvents')
     evt.initEvent('click', false, true)
-    Vue.nextTick(() => {
-      done()
-      vm.$el.querySelector('a.sign-out').dispatchEvent(evt)
+    vm.$el.querySelector('a.sign-out').dispatchEvent(evt)
+    moxios.wait(() => {
+      moxios.requests.mostRecent().respondWith({
+        status: 200,
+        headers: {
+          Authorization: 'Bearer: 12341324jlkj4132l4kj1234'
+        }
+      }).then(() => {
+        done()
+      })
     })
   })
 

@@ -57,9 +57,6 @@
       user: {
         get () {
           return this.$store.getters.user
-        },
-        set (user) {
-          this.$store.dispatch('UPDATE_USER', user)
         }
       },
       userAndAssociations: {
@@ -67,45 +64,13 @@
           if (this.$store.getters.userAndAssociations.roles !== undefined) {
             this.$store.getters.userAndAssociations.roles.push({name: 'Select Role', id: 'Select Role'})
           }
+          // console.log(this.$store.getters.userAndAssociations)
           return this.$store.getters.userAndAssociations
         }
       },
       updateStatus: {
         get () {
           return this.$store.getters.updateStatus
-        },
-        set (updateStatus) {
-          this.$store.dispatch('UPDATE_STATUS', updateStatus)
-        }
-      },
-      metricRoleInstance: {
-        get () {
-          return this.$store.getters.metricRoleInstance
-        },
-        set (metricRoleInstance) {
-          console.log('create a new one')
-          this.$store.dispatch('CREATE_METRIC_ROLE_INSTANCE', metricRoleInstance)
-        }
-      },
-      metricRoleInstances: {
-        get () {
-          return this.$store.getters.metricRoleInstances.map((instance) => instance.count).reduce((first, second) => first + second, 0)
-        }
-      },
-      role: {
-        get () {
-          return this.$store.getters.role
-        },
-        set (role) {
-          // we are not actually updating the values
-          // of the role, just the role
-          this.$store.commit('UPDATE_ROLE', role)
-        }
-      },
-      roles: {
-        get () {
-          this.$store.getters.roles.push({name: 'Select Role'})
-          return this.$store.getters.roles
         }
       },
       roleAndAssociations: {
